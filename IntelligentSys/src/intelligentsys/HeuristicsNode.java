@@ -19,8 +19,8 @@ public class HeuristicsNode extends Node{
         super(state, car, n);
     }
     
-    public HeuristicsNode(int[][] state, carPosition[] car, int n, Node previous) {
-        super(state, car, n, previous);
+    public HeuristicsNode(int[][] state, carPosition[] car, int n, Node previous, String step) {
+        super(state, car, n, previous,step);
     }
     
     

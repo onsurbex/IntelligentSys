@@ -17,19 +17,22 @@ public class Node {
     public carPosition[] cars;
     public Node previous;
     public ArrayList<Node> successors;
+    public String step;
     
     public Node(int[][] state, carPosition[] car, int n){
         this.state = state;
         this.cars = car;
         this.n = n;
         this.previous = null;
+        this.step = null;
     }
     
-    public Node(int[][] state, carPosition[] car, int n, Node previous){
+    public Node(int[][] state, carPosition[] car, int n, Node previous, String step){
         this.state = state;
         this.cars = car;
         this.n = n;
         this.previous = previous;
+        this.step = step;
     }
     
     public void addSuccessors(){
@@ -38,12 +41,13 @@ public class Node {
         for(int i = 0; i < n; i++){
             if(car[i].y < (n - 1) && state[car[i].y + 1][car[i].x] != -1){
                 // UP
+                
                 car = this.cars;
                 newState = this.state;
                 newState[car[i].y][car[i].x] = 0;
                 car[i].y += 1;
                 newState[car[i].y + 1][car[i].x] = i + 1;
-                this.successors.add(new Node(newState,car,this.n,this));
+                this.successors.add(new Node(newState,car,this.n,this, "UP"));
             }
             if(car[i].y > 0 && state[car[i].y - 1][car[i].x] != -1) {
                 // DOWN
@@ -52,7 +56,7 @@ public class Node {
                 newState[car[i].y][car[i].x] = 0;
                 car[i].y -= 1;
                 newState[car[i].y - 1][car[i].x] = i + 1;
-                this.successors.add(new Node(newState,car,this.n,this));
+                this.successors.add(new Node(newState,car,this.n,this, "DOWN"));
             }
             if(car[i].x < (n - 1) && state[car[i].y][car[i].x + 1] != -1){
                 // RIGHT
@@ -61,7 +65,7 @@ public class Node {
                 newState[car[i].y][car[i].x] = 0;
                 car[i].x += 1;
                 newState[car[i].y][car[i].x + 1] = i + 1;
-                this.successors.add(new Node(newState,car,this.n,this));
+                this.successors.add(new Node(newState,car,this.n,this, "RIGHT"));
             } 
             if(car[i].x > 0 && state[car[i].y][car[i].x - 1] != -1){
                 //LEFT
@@ -70,8 +74,23 @@ public class Node {
                 newState[car[i].y][car[i].x] = 0;
                 car[i].x -= 1;
                 newState[car[i].y][car[i].x - 1] = i + 1;
-                this.successors.add(new Node(newState,car,this.n,this));
+                this.successors.add(new Node(newState,car,this.n,this, "LEFT"));
             } 
         }
     }
+    
+    public void show(){
+        
+        for (int i = 0; i < n ; i++) {
+            for (int j = 0; j < n; j++) {
+                System.out.println( this.state[i][j]+"\t");
+            }
+            System.out.println("\n");
+        }
+       
+        
+        
+    }
+    
+    
 }
