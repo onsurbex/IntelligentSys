@@ -27,15 +27,27 @@ public class BreathFirst {
         LinkedList<Node> open = null;
         open.add(new Node(maze,cars,n));
         Node node;
-        LinkedList<Node> solution;
+        LinkedList<Node> solution = null;
+        ArrayList<Node> successor = null;
         
         while(!open.isEmpty()){
             node = open.getFirst();
-            if(isExplored(explored,node))
-                if(testGoal(node,n,nCars))
-                    solution = recoverPath(node);
-                
+            if(isExplored(explored,node)){
+                if(testGoal(node,n,nCars)){
+                    solution = recoverPath(node, solution);
+                    node.show();
+                    showSolution(solution);
+                }
+                node.addSuccessors();
+                successor = node.successors;
+                for (Node s : successor) {
+                       open.addLast(s); 
+                    
+                }
+                explored.add(node);
+            }  
         }
+        System.out.println("Failure while doing  breathfirst");
     }
     
 
@@ -80,5 +92,16 @@ public class BreathFirst {
             recoverPath(node.previous, sol);
         }
         return sol;
+    }
+    
+    private static void showSolution(LinkedList<Node> solution){
+        for (Node n : solution) {
+            if (n.step == null) {
+                System.out.println("This is the initial  node");
+                break;
+            }
+            System.out.println(n.step);
+        }
+ 
     }
 }
