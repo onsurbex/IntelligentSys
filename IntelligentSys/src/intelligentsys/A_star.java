@@ -33,7 +33,7 @@ public class A_star {
         }; 
         
         ArrayList<HeuristicsNode> explored = null;
-        PriorityQueue<HeuristicsNode> open = null;
+        PriorityQueue<HeuristicsNode> open = new PriorityQueue<HeuristicsNode>(nodeComparator);
         open.add(new HeuristicsNode(maze,cars,n));
         HeuristicsNode node;
         LinkedList<HeuristicsNode> solution = null;
