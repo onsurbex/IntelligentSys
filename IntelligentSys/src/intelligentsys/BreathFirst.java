@@ -34,15 +34,14 @@ public class BreathFirst {
             node = open.getFirst();
             if(isExplored(explored,node)){
                 if(testGoal(node,n,nCars)){
-                    solution = recoverPath(node, solution);
+                    solution = recoverPath(node);
                     node.show();
                     showSolution(solution);
                 }
                 node.addSuccessors();
                 successor = node.successors;
                 for (Node s : successor) {
-                       open.addLast(s); 
-                    
+                       open.addLast(s);  
                 }
                 explored.add(node);
             }  
@@ -86,10 +85,11 @@ public class BreathFirst {
         return cars;
     }
 
-    private static LinkedList<Node> recoverPath(Node node, LinkedList<Node> sol) {
-        while(node != null){
-            sol.add(node);
-            recoverPath(node.previous, sol);
+    private static LinkedList<Node> recoverPath(Node node) {
+        LinkedList<Node> sol = new LinkedList();
+        while(node.previous != null){
+            sol.add(node); 
+            node = node.previous;
         }
         return sol;
     }
@@ -98,7 +98,7 @@ public class BreathFirst {
         for (Node n : solution) {
             if (n.step == null) {
                 System.out.println("This is the initial  node");
-                break;
+                continue;
             }
             System.out.println(n.step);
         }

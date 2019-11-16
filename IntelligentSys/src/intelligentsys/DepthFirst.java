@@ -37,7 +37,7 @@ public class DepthFirst {
             node = open.getLast();
             if(isExplored(explored,node)){
                 if(testGoal(node,n,nCars)){
-                    solution = recoverPath(node, solution);
+                    solution = recoverPath(node);
                     node.show();
                     showSolution(solution);
                 }
@@ -88,10 +88,11 @@ public class DepthFirst {
         return cars;
     }
 
-    private static LinkedList<Node> recoverPath(Node node, LinkedList<Node> sol) {
-        while(node != null){
-            sol.add(node);
-            recoverPath(node.previous, sol);
+    private static LinkedList<Node> recoverPath(Node node) {
+        LinkedList<Node> sol = new LinkedList();
+        while(node.previous != null){
+            sol.add(node); 
+            node = node.previous;
         }
         return sol;
     }

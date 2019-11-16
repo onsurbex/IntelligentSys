@@ -80,16 +80,12 @@ public class Node {
     }
     
     public void show(){
-        
         for (int i = 0; i < n ; i++) {
             for (int j = 0; j < n; j++) {
                 System.out.println( this.state[i][j]+"\t");
             }
             System.out.println("\n");
         }
-       
-        
-        
     }
     
     
