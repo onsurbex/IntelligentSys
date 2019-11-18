@@ -23,7 +23,7 @@ public class A_star {
         int[][] maze = Maze.getProblemInstance(n, nCars, seed);
         
         carPosition[] cars;
-        cars = lookupCars(maze);
+        cars = lookupCars(maze, nCars);
         
         Comparator<HeuristicsNode> nodeComparator = new Comparator<HeuristicsNode>() {
             @Override
@@ -41,7 +41,7 @@ public class A_star {
         
         while(!open.isEmpty()){
             node = open.poll();
-            if(isExplored(explored,node)){
+            if(!isExplored(explored,node)){
                 if(testGoal(node,n,nCars)){
                     solution = recoverPath(node);
                     node.show();
@@ -82,12 +82,12 @@ public class A_star {
     }
     
     
-    private static carPosition[] lookupCars(int[][] maze) {
-        carPosition[] cars = null;
+    private static carPosition[] lookupCars(int[][] maze, int nCars) {
+        carPosition[] cars = new carPosition[nCars];
         int k = 0;
         for(int i = 0; i < maze.length; i++){
             if(maze[0][i] > 0){
-                cars[k] = new carPosition(0,i);
+                cars[k] = new carPosition(i,0);
                 k++;
             }
         }

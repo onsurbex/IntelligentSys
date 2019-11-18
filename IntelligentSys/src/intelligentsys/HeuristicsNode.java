@@ -53,7 +53,7 @@ public class HeuristicsNode extends Node{
         }
         HeuristicsNode node = null;
         int cost = this.g + 1;
-        for(int i = 0; i < n; i++){
+        for(int i = 0; i < this.cars.length; i++){
             if(car[i].y < 0 && state[car[i].y - 1][car[i].x] != -1){
                 // UP
                 car[i] = new carPosition(this.cars[i].x,this.cars[i].y);
