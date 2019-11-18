@@ -13,10 +13,10 @@ import java.util.LinkedList;
  */
 public class BreathFirst {
     public static void main(String[] args) {
-        int n = 3;
+        int n = 10;
         int nCars = 1;
         //int seed = (int)System.currentTimeMillis();
-        int seed = 2019;
+        int seed = 6;
         int[][] maze = Maze.getProblemInstance(n, nCars, seed);
         
         carPosition[] cars;
@@ -30,10 +30,10 @@ public class BreathFirst {
         LinkedList<Node> solution = null;
         ArrayList<Node> successor = null;
         System.out.println("pre while");
-        
+        //node.s
         while(!open.isEmpty()){
             node = open.removeFirst();
-            node.show();
+            //node.show();
             if(!isExplored(explored,node)){
                 if(testGoal(node,n,nCars)){
                     System.out.println("terminando");
