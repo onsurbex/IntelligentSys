@@ -46,37 +46,40 @@ public class HeuristicsNode extends Node{
     
     @Override
     public void addSuccessors(){
-        int [][] newState = this.state;
-        carPosition[] car = this.cars;
+        int [][] newState = this.state.clone();
+        carPosition[] car = new carPosition[this.cars.length];
+        for (int i = 0; i < this.cars.length; i++) {
+            car[i] =  new carPosition(this.cars[i].x,this.cars[i].y);
+        }
         HeuristicsNode node = null;
         int cost = this.g + 1;
         for(int i = 0; i < n; i++){
-            if(car[i].y < (n - 1) && state[car[i].y + 1][car[i].x] != -1){
+            if(car[i].y < 0 && state[car[i].y - 1][car[i].x] != -1){
                 // UP
-                car = this.cars;
-                newState = this.state;
+                car[i] = new carPosition(this.cars[i].x,this.cars[i].y);
+                newState = this.copyMatrix(this.state);
                 newState[car[i].y][car[i].x] = 0;
-                car[i].y += 1;
-                newState[car[i].y + 1][car[i].x] = i + 1;
+                car[i].y -= 1;
+                newState[car[i].y - 1][car[i].x] = i + 1;
                 node = new HeuristicsNode(newState,car,this.n,this, "UP", cost);
                 node.HeuristicsLevels();
                 this.successors.add(node);
             }
-            if(car[i].y > 0 && state[car[i].y - 1][car[i].x] != -1) {
+            if(car[i].y > n - 1 && state[car[i].y + 1][car[i].x] != -1) {
                 // DOWN
-                car = this.cars;
-                newState = this.state;
+                car[i] = new carPosition(this.cars[i].x,this.cars[i].y);
+                newState = this.copyMatrix(this.state);
                 newState[car[i].y][car[i].x] = 0;
-                car[i].y -= 1;
-                newState[car[i].y - 1][car[i].x] = i + 1;
+                car[i].y += 1;
+                newState[car[i].y + 1][car[i].x] = i + 1;
                 node = new HeuristicsNode(newState,car,this.n,this, "DOWN", cost);
                 node.HeuristicsLevels();
                 this.successors.add(node);
             }
             if(car[i].x < (n - 1) && state[car[i].y][car[i].x + 1] != -1){
                 // RIGHT
-                
-                newState = this.state;
+                car[i] = new carPosition(this.cars[i].x,this.cars[i].y);
+                newState = this.copyMatrix(this.state);
                 newState[car[i].y][car[i].x] = 0;
                 car[i].x += 1;
                 newState[car[i].y][car[i].x + 1] = i + 1;
@@ -86,8 +89,8 @@ public class HeuristicsNode extends Node{
             } 
             if(car[i].x > 0 && state[car[i].y][car[i].x - 1] != -1){
                 //LEFT
-                
-                newState = this.state;
+                car[i] = new carPosition(this.cars[i].x,this.cars[i].y);
+                newState = this.copyMatrix(this.state);
                 newState[car[i].y][car[i].x] = 0;
                 car[i].x -= 1;
                 newState[car[i].y][car[i].x - 1] = i + 1;

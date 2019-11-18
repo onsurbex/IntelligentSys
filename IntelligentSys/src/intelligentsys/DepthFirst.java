@@ -34,7 +34,7 @@ public class DepthFirst {
         
         
          while(!open.isEmpty()){
-            node = open.getLast();
+            node = open.removeLast();
             if(isExplored(explored,node)){
                 if(testGoal(node,n,nCars)){
                     solution = recoverPath(node);

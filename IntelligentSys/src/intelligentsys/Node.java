@@ -25,58 +25,97 @@ public class Node {
         this.n = n;
         this.previous = null;
         this.step = null;
+        this.successors = new ArrayList<Node>();
     }
     
     public Node(int[][] state, carPosition[] car, int n, Node previous, String step){
         this.state = state;
-        this.cars = car;
+        this.cars = new carPosition[car.length];
+        for (int i = 0; i < this.cars.length; i++) {
+            this.cars[i] = new carPosition(0,0);
+        }
+        for (int i = 0; i < car.length; i++) {
+            this.cars[i].x = car[i].x;
+            this.cars[i].y = car[i].y;
+        }
         this.n = n;
         this.previous = previous;
         this.step = step;
+        this.successors = new ArrayList<Node>();
     }
     
-    public void addSuccessors(){
-        int [][] newState = this.state;
-        carPosition[] car = this.cars;
-        for(int i = 0; i < n; i++){
-            if(car[i].y < (n - 1) && state[car[i].y + 1][car[i].x] != -1){
-                // UP
-                
-                car = this.cars;
-                newState = this.state;
-                newState[car[i].y][car[i].x] = 0;
-                car[i].y += 1;
-                newState[car[i].y + 1][car[i].x] = i + 1;
-                this.successors.add(new Node(newState,car,this.n,this, "UP"));
-            }
-            if(car[i].y > 0 && state[car[i].y - 1][car[i].x] != -1) {
-                // DOWN
-                car = this.cars;
-                newState = this.state;
-                newState[car[i].y][car[i].x] = 0;
-                car[i].y -= 1;
-                newState[car[i].y - 1][car[i].x] = i + 1;
-                this.successors.add(new Node(newState,car,this.n,this, "DOWN"));
-            }
-            if(car[i].x < (n - 1) && state[car[i].y][car[i].x + 1] != -1){
-                // RIGHT
-                
-                newState = this.state;
-                newState[car[i].y][car[i].x] = 0;
-                car[i].x += 1;
-                newState[car[i].y][car[i].x + 1] = i + 1;
-                this.successors.add(new Node(newState,car,this.n,this, "RIGHT"));
-            } 
-            if(car[i].x > 0 && state[car[i].y][car[i].x - 1] != -1){
-                //LEFT
-                
-                newState = this.state;
-                newState[car[i].y][car[i].x] = 0;
-                car[i].x -= 1;
-                newState[car[i].y][car[i].x - 1] = i + 1;
-                this.successors.add(new Node(newState,car,this.n,this, "LEFT"));
-            } 
+    public void addSuccessors() throws ArrayIndexOutOfBoundsException {
+        int [][] newState = this.copyMatrix(this.state);
+        carPosition[] car = new carPosition[this.cars.length];
+        for (int i = 0; i < this.cars.length; i++) {
+            car[i] =  new carPosition(this.cars[i].x,this.cars[i].y);
         }
+        Node nodeAux;
+        Node parent;
+        try {
+            for(int i = 0; i < car.length; i++){
+                if(car[i].y > 0 && state[car[i].y - 1][car[i].x] != -1){
+                    // UP
+                    for (int j = 0; j < this.cars.length; j++) {
+                        car[i] = new carPosition(this.cars[i].x,this.cars[i].y);
+                    }
+                    newState = this.copyMatrix(this.state);
+                    newState[car[i].y][car[i].x] = 0;
+                    car[i].y -= 1;
+                    newState[car[i].y][car[i].x] = i + 1;
+                    nodeAux = new Node(newState,car,this.n,this, "UP");
+                    this.successors.add(nodeAux);
+                }
+                if(car[i].y < (n - 1) && state[car[i].y + 1][car[i].x] != -1) {
+                    // DOWN
+                    for (int j = 0; j < this.cars.length; j++) {
+                        car[i] = new carPosition(this.cars[i].x,this.cars[i].y);
+                    }
+                    newState = this.copyMatrix(this.state);
+                    newState[car[i].y][car[i].x] = 0;
+                    car[i].y += 1;
+                    newState[car[i].y][car[i].x] = i + 1;
+                    nodeAux = new Node(newState,car,this.n,this, "DOWN");
+                    this.successors.add(nodeAux);
+                }
+                if(car[i].x < (n - 1) && state[car[i].y][car[i].x + 1] != -1){
+                    // RIGHT 
+                    for (int j = 0; j < this.cars.length; j++) {
+                        car[i] = new carPosition(this.cars[i].x,this.cars[i].y);
+                    }
+                    newState = this.copyMatrix(this.state);
+                    newState[car[i].y][car[i].x] = 0;
+                    car[i].x += 1;
+                    newState[car[i].y][car[i].x] = i + 1;
+                    nodeAux = new Node(newState,car,this.n,this, "RIGHT");
+                    this.successors.add(nodeAux);
+                } 
+                if(car[i].x > 0 && state[car[i].y][car[i].x - 1] != -1){
+                    //LEFT
+                    for (int j = 0; j < this.cars.length; j++) {
+                        car[i] = new carPosition(this.cars[i].x,this.cars[i].y);
+                    }
+                    newState = this.copyMatrix(this.state);
+                    newState[car[i].y][car[i].x] = 0;
+                    car[i].x -= 1;
+                    newState[car[i].y][car[i].x] = i + 1;
+                    nodeAux = new Node(newState,car,this.n,this, "LEFT");
+                    this.successors.add(nodeAux);
+                } 
+            }
+        } catch(ArrayIndexOutOfBoundsException e){
+        
+        }
+    }
+    
+    public int[][] copyMatrix(int [][] original){
+        int [][] newMatrix = new int[original.length][original.length];
+        for (int i = 0; i < original.length; i++) {
+            for (int j = 0; j < original[i].length; j++) {
+                newMatrix[i][j] = original[i][j];
+            }
+        }
+        return newMatrix;
     }
     
     public void show(){
