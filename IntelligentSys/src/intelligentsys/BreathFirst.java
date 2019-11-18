@@ -13,7 +13,7 @@ import java.util.LinkedList;
  */
 public class BreathFirst {
     public static void main(String[] args) {
-        int n = 5;
+        int n = 3;
         int nCars = 1;
         //int seed = (int)System.currentTimeMillis();
         int seed = 2019;
@@ -33,7 +33,7 @@ public class BreathFirst {
         
         while(!open.isEmpty()){
             node = open.removeFirst();
-            
+            node.show();
             if(!isExplored(explored,node)){
                 if(testGoal(node,n,nCars)){
                     System.out.println("terminando");
@@ -42,10 +42,7 @@ public class BreathFirst {
                     showSolution(solution);
                     System.exit(0);
                 }
-                System.out.println("añadido sucesor");
-
-                    node.addSuccessors();
-                
+                node.addSuccessors();            
                 successor = node.successors;
                 for (Node s : successor) {
                        open.addLast(s);  
@@ -61,7 +58,7 @@ public class BreathFirst {
     public static boolean testGoal(Node node,int n, int nCars){
         int k = 0;
         for (int i = 0; i < nCars; i++) {
-            if(node.cars[i].y == n)
+            if(node.cars[i].y == n - 1)
                 k++; 
         }
         return(k==nCars);
@@ -69,18 +66,19 @@ public class BreathFirst {
     
     public static boolean isExplored(ArrayList<Node> explored, Node n){
         try{
-            System.out.println("se mete en el explored");
+            //System.out.println("se mete en el explored");
             for (Node node : explored) {
                 if(n.state.equals(node.state)){
-                    System.out.println("true");
+                    System.out.println("isExplored: true");
                     return true;
                 }
             }
             
-            System.out.println("false");
+            System.out.println("isExplored: false");
             return false;
-        } catch (NullPointerException e){
-            return false;
+        } catch (NullPointerException e){   
+            System.out.println("Erro: " + e);
+            return true;
         }
     }
     
