@@ -20,7 +20,7 @@ public class BreathFirst {
         int[][] maze = Maze.getProblemInstance(n, nCars, seed);
         
         carPosition[] cars;
-        cars = lookupCars(maze,n);
+        cars = lookupCars(maze,nCars);
         
         ArrayList<Node> explored = new ArrayList();
         System.out.println("llega hasta el arraylist");
@@ -32,24 +32,26 @@ public class BreathFirst {
         System.out.println("pre while");
         
         while(!open.isEmpty()){
-            node = open.getFirst();
+            node = open.removeFirst();
             
-            if(isExplored(explored,node))
+            if(!isExplored(explored,node)){
                 if(testGoal(node,n,nCars)){
                     System.out.println("terminando");
                     solution = recoverPath(node);
                     node.show();
                     showSolution(solution);
-                    break;
+                    System.exit(0);
                 }
                 System.out.println("añadido sucesor");
-                node.addSuccessors();
+
+                    node.addSuccessors();
+                
                 successor = node.successors;
                 for (Node s : successor) {
                        open.addLast(s);  
                 }
                 explored.add(node);
-             
+            }
         }
         System.out.println("Failure while doing  breathfirst");
     }
@@ -72,9 +74,9 @@ public class BreathFirst {
                 if(n.state.equals(node.state)){
                     System.out.println("true");
                     return true;
+                }
             }
-                
-            }
+            
             System.out.println("false");
             return false;
         } catch (NullPointerException e){
@@ -88,7 +90,7 @@ public class BreathFirst {
         int k = 0;
         for(int i = 0; i < maze.length; i++){
             if(maze[0][i] > 0){
-                cars[k] = new carPosition(0,i);
+                cars[k] = new carPosition(i,0);
                 k++;
             }
         }
